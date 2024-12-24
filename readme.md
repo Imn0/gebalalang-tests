@@ -1,4 +1,4 @@
-# Tests For Gembalalang Compiler
+# Tests For Gebalalang Compiler
 
 ## Usage
 Uses modded VM 
