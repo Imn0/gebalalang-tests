@@ -6,8 +6,8 @@ import subprocess
 @dataclass(frozen=True)
 class CFG:
     _main_test_dir = "./tests"
-    _vm_path = "../maszyna_wirtualna/maszyna-wirtualna"
-    _gblc_path = "../gembalalangc/target/debug/gembalalangc"
+    _vm_path = "../GVM/maszyna-wirtualna"
+    _gblc_path = "../../gbc/target/debug/gbc"
     _test_dir = "./tests"
 
     @property
@@ -31,7 +31,7 @@ class CFG:
         return os.path.join(script_dir, self._test_dir)
 
     def recompile(self):
-        cmd = ["cargo","build", "--manifest-path=gembalalangc/Cargo.toml"]
+        cmd = ["cargo","build", "--manifest-path=../gbc/Cargo.toml"]
         process = subprocess.run(
             cmd,
         )

@@ -28,6 +28,8 @@ class TestResult:
 class TestRunner:
     def __init__(self, cfg: CFG) -> None:
         self.cfg = cfg
+        if not os.path.exists("./build"):
+            os.makedirs("./build")
 
     def __call__(self, tests: dict[str, list[str]]) -> dict[str, list[TestResult]]:
         results = {}
@@ -68,6 +70,8 @@ class TestRunner:
         rtn = process.wait()
 
         if rtn != 0:
+            print(command)
+            print(stderr)
             return False
         return True
 
