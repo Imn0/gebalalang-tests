@@ -1,5 +1,5 @@
-#type: ignore
-from gbc_test.test_runner import TestResult
+# type: ignore
+from test_runner import TestResult
 import os
 
 from typing import List, Dict

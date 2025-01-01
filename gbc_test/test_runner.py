@@ -1,8 +1,11 @@
 from dataclasses import dataclass
 import subprocess
-from gbc_test.config import CFG
 import re
 import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(__file__, "../..")))
+from config import CFG
 
 
 @dataclass(frozen=True)
@@ -21,13 +24,13 @@ class TestResult:
     avg_total_cost_wout_io: float
 
     def __lt__(self, other):
-         return self.name < other.name
-
+        return self.name < other.name
 
 
 class TestRunner:
     def __init__(self, cfg: CFG) -> None:
         self.cfg = cfg
+
         if not os.path.exists("./build"):
             os.makedirs("./build")
 
@@ -36,14 +39,14 @@ class TestRunner:
         for k, v in tests.items():
             results[k] = self.run_test_set(v)
         return results
-    
+
     def run_test_set(self, test_files: list[str]) -> list[TestResult]:
         results: list[TestResult] = []
         script_dir = os.path.dirname(os.path.abspath(__file__))
 
         for test_file in test_files:
-            compiled_name = os.path.join(script_dir, "./build/a.mr")
-            r = self._compile(test_file, compiled_name)
+            compiled_name = "./build/a.mr"
+            r = self._compile(test_file, "./build/a.mr")
             if r:
                 test_cases = self.parse_pragma_tests(test_file)
                 if len(test_cases) == 0:
@@ -55,9 +58,8 @@ class TestRunner:
         results.sort()
         return results
 
-
     def _compile(self, in_file: str, out_file: str) -> bool:
-        command = [self.cfg.gblc_path, in_file, "-o", out_file]
+        command = self.cfg.compile_command(in_file, out_file)
         process = subprocess.Popen(
             command,
             stdin=subprocess.PIPE,
@@ -123,7 +125,8 @@ class TestRunner:
 
                     test_case = TestCase(
                         name=os.path.basename(file_path),
-                        input_text=input_text, expected_output=expected_output
+                        input_text=input_text,
+                        expected_output=expected_output,
                     )
 
                     test_cases.append(test_case)
@@ -132,8 +135,6 @@ class TestRunner:
                 if not line.startswith("#pragma test"):
                     print(f"File {file_path} invalid or no pragma test")
                     return []
-
-            
 
         return test_cases
 
@@ -156,19 +157,20 @@ class TestRunner:
             )
 
             input_data = "\n".join(test_case.input_text)
-            
+
             try:
                 stdout, stderr = result.communicate(input_data, timeout=5)
             except subprocess.TimeoutExpired:
                 result.kill()
-                stdout, stderr = result.communicate()  
+                stdout, stderr = result.communicate()
                 print(f"test {name} took too long and was killed. stderr: {stderr}")
                 return TestResult(name, False, 0, 0.0, 0.0)
 
             if result.returncode != 0:
-                print(f"test {name} failed with return code {result.returncode}. stderr: {stderr}")
+                print(
+                    f"test {name} failed with return code {result.returncode}. stderr: {stderr}"
+                )
                 return TestResult(name, False, 0, 0.0, 0.0)
-
 
             output = stdout.strip().split("\n")
 
@@ -181,8 +183,8 @@ class TestRunner:
             r_io_cost = re.search(regex_io_cost, stderr)
             if r_inst is None or r_cost is None or r_io_cost is None:
                 print(f"Failed to parse results of{name} .")
-                
-                return TestResult(name,False, 0, 0.0, 0.0)
+
+                return TestResult(name, False, 0, 0.0, 0.0)
 
             num_instructions = int(r_inst.group(1))
 
@@ -194,9 +196,17 @@ class TestRunner:
             avg_cost = (avg_cost + current_cost) / (i + 1)
             avg_cost_wout_io = (avg_cost_wout_io + current_cost_wout_io) / (i + 1)
 
+            if len(output) != len(test_case.expected_output):
+                print(
+                    f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
+                )
+                return TestResult(name, False, 0, 0.0, 0.0)
+
             for i, o in enumerate(output):
                 if test_case.expected_output[i] != o:
-                    print(f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} .")
-                    return TestResult(name,False, 0, 0.0, 0.0)
+                    print(
+                        f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
+                    )
+                    return TestResult(name, False, 0, 0.0, 0.0)
 
         return TestResult(name, True, num_instructions, avg_cost, avg_cost_wout_io)
