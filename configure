@@ -3,7 +3,7 @@
 
 make -C ./GVM
 
-if [ ! -f "./gbc-test-venv/bin/activate"]; then
+if [[ ! -f "./gbc-test-venv/bin/activate" ]]; then
     echo "creating venv"
     python3 -m venv gbc-test-venv
 fi

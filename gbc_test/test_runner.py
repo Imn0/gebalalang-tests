@@ -47,6 +47,7 @@ class TestRunner:
         for test_file in test_files:
             compiled_name = "./build/a.mr"
             r = self._compile(test_file, "./build/a.mr")
+            test_cases = []
             if r:
                 test_cases = self.parse_pragma_tests(test_file)
                 if len(test_cases) == 0:
@@ -55,6 +56,7 @@ class TestRunner:
                 results.append(r)
             else:
                 print(f"Cant compile {test_file}")
+                results.append(TestResult(os.path.basename(test_file), False, 0, 0, 0))
         results.sort()
         return results
 
@@ -200,13 +202,13 @@ class TestRunner:
                 print(
                     f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
                 )
-                return TestResult(name, False, 0, 0.0, 0.0)
+                return TestResult(name, False, num_instructions, avg_cost, avg_cost_wout_io)
 
             for i, o in enumerate(output):
                 if test_case.expected_output[i] != o:
                     print(
                         f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
                     )
-                    return TestResult(name, False, 0, 0.0, 0.0)
+                    return TestResult(name, False, num_instructions, avg_cost, avg_cost_wout_io)
 
         return TestResult(name, True, num_instructions, avg_cost, avg_cost_wout_io)
