@@ -1,5 +1,7 @@
 #Bartek Łabuz
-#pragma test in(12, -3) out(1, 1, 2, 1, 2, 2, -1, -2, -2, -1, -2, -1)
+#pragma test in(12, -3) out(1,1,2,1,2,2,1,1,-2,-1,-1,-1,-2,-2)
+
+
 PROGRAM IS
     a, b, c
 BEGIN
