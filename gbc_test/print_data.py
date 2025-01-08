@@ -16,8 +16,9 @@ class TestResultPrinter:
         for section, test_results in results.items():
             table_data: list[list[str]] = []
 
-            table_data.append([section, "", "", "", ""])
-            table_data.append(SEPARATING_LINE)
+            print(f"\n{'=' * 50}")
+            print(f"SECTION: {section.upper()}")
+            print(f"{'=' * 50}")
 
             table_data.append(
                 [
@@ -40,8 +41,8 @@ class TestResultPrinter:
                         result.name,
                         passed_str,
                         result.num_instructions,
-                        f"{result.avg_total_cost:.2f}",
-                        f"{result.avg_total_cost_wout_io:.2f}",
+                        f"{int(result.avg_total_cost)}",
+                        f"{int(result.avg_total_cost_wout_io)}",
                     ]
                 )
 

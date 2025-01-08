@@ -55,8 +55,11 @@ class TestRunner:
                 r = self.run_test(compiled_name, test_cases)
                 results.append(r)
             else:
-                print(f"Cant compile {test_file}")
-                results.append(TestResult(os.path.basename(test_file), False, 0, 0, 0))
+                if os.path.basename(test_file).startswith("error"):
+                    results.append(TestResult(os.path.basename(test_file), True, 0, 0, 0))
+                else:
+                    print(f"Cant compile {test_file}")
+                    results.append(TestResult(os.path.basename(test_file), False, 0, 0, 0))
         results.sort()
         return results
 
@@ -74,6 +77,8 @@ class TestRunner:
         rtn = process.wait()
 
         if rtn != 0:
+            if os.path.basename(in_file).startswith("error"):
+                return False
             print(command)
             print(stderr)
             return False
@@ -144,14 +149,15 @@ class TestRunner:
         num_instructions: int = 0
         avg_cost: float = 0.0
         avg_cost_wout_io: float = 0.0
+        fail = False
 
         name = ""
         for i, test_case in enumerate(test_cases):
             name = test_case.name
             print(f"running {name}")
-            command = [self.cfg.vm_path, compiled_file]
+            run_command = self.cfg.run_compiled_command(compiled_file)
             result = subprocess.Popen(
-                command,
+                run_command,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -166,13 +172,15 @@ class TestRunner:
                 result.kill()
                 stdout, stderr = result.communicate()
                 print(f"test {name} took too long and was killed. stderr: {stderr}")
-                return TestResult(name, False, 0, 0.0, 0.0)
+                fail = True
+                continue
 
             if result.returncode != 0:
                 print(
                     f"test {name} failed with return code {result.returncode}. stderr: {stderr}"
                 )
-                return TestResult(name, False, 0, 0.0, 0.0)
+                fail = True
+                continue
 
             output = stdout.strip().split("\n")
 
@@ -185,8 +193,8 @@ class TestRunner:
             r_io_cost = re.search(regex_io_cost, stderr)
             if r_inst is None or r_cost is None or r_io_cost is None:
                 print(f"Failed to parse results of{name} .")
-
-                return TestResult(name, False, 0, 0.0, 0.0)
+                fail = True
+                continue
 
             num_instructions = int(r_inst.group(1))
 
@@ -202,13 +210,18 @@ class TestRunner:
                 print(
                     f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
                 )
-                return TestResult(name, False, num_instructions, avg_cost, avg_cost_wout_io)
+                fail = True
+                continue
 
             for i, o in enumerate(output):
                 if test_case.expected_output[i] != o:
                     print(
                         f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
                     )
-                    return TestResult(name, False, num_instructions, avg_cost, avg_cost_wout_io)
+                    fail = True
+                    break
+
+        if fail:
+            return TestResult(name, False, num_instructions, avg_cost, avg_cost_wout_io)
 
         return TestResult(name, True, num_instructions, avg_cost, avg_cost_wout_io)
