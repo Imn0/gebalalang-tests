@@ -38,7 +38,7 @@ class TestResultPrinter:
 
                 table_data.append(
                     [
-                        result.name,
+                        f":{result.name:>30}",
                         passed_str,
                         result.num_instructions,
                         f"{int(result.avg_total_cost)}",
@@ -198,7 +198,7 @@ class TestResultPrinter:
 
                 table_data.append(
                     [
-                        current_result.name,
+                        f":{current_result.name:>30}",
                         passed_str,
                         num_instructions_display,
                         total_cost_display,

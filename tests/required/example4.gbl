@@ -1,7 +1,4 @@
-# Kombinacje
-# ? 20
-# ? 9
-# > 167960
+#pragma test in(20, 9) out(167960)
 
 PROCEDURE s(n,m) IS
     o
