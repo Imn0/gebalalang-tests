@@ -1,8 +1,4 @@
-# Kombinacje 2
-# ? 20
-# ? 9
-# > 167960
-
+#pragma test in(20, 9) out(167960)
 PROCEDURE factorial(T s,n) IS
   p
 BEGIN

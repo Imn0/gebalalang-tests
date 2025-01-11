@@ -1,6 +1,4 @@
-# Fibonacci 26
-# ? 1
-# > 121393
+#pragma test in(1) out(121393)
 
 PROGRAM IS
   a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z

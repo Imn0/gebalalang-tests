@@ -5,7 +5,6 @@ PROCEDURE wtf(T n, m) IS
 BEGIN
     var := 100 / 20;
     FOR i FROM n[m] TO n[var] DO
-        WRITE i;
         n[var] := n[var] - 100;
     ENDFOR
 

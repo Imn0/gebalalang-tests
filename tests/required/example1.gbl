@@ -1,5 +1,4 @@
-# Równanie diofantyczne mx-ny=nwd(m,n) (z)
-
+#pragma test in(10, 15) out(14, 9, 5)
 PROCEDURE de(m,n,x,y,z) IS
   a,b,r,s,reszta,iloraz,rr,ss,tmp
 BEGIN
@@ -10,7 +9,6 @@ BEGIN
   r:=n;
   s:=m-1;
   WHILE b>0 DO
-    # niezmiennik: NWD(m,n)=NWD(a,b) i a=mx-ny i b=mr-ns
     reszta:=a%b;
     iloraz:=a/b;
     a:=b;
