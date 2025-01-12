@@ -26,6 +26,4 @@ test_runner = TestRunner(cfg)
 r = test_runner(tests)
 # old = TestResultPrinter.load_data_from_file("aa.dat")
 # TestResultPrinter.compare_results(old, r)
-required = {key: r.pop(key) for key in list(r.keys()) if key.startswith("required")}
 TestResultPrinter.print_data(r)
-TestResultPrinter.print_data(required)

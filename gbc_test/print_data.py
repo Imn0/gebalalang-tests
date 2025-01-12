@@ -13,6 +13,9 @@ class TestResultPrinter:
         """
         Print test results in a tabular format using tabulate library
         """
+        failed = []
+        passed_count = 0
+        total = 0
         for section, test_results in results.items():
             table_data: list[list[str]] = []
 
@@ -35,6 +38,12 @@ class TestResultPrinter:
                 passed_str = (
                     colored("Yes", "green") if result.passed else colored("No", "red")
                 )
+                total += 1
+                if result.passed:
+                    passed_count += 1
+                else:
+                    failed.append(result.name)
+                    
 
                 table_data.append(
                     [
@@ -48,6 +57,13 @@ class TestResultPrinter:
 
             print(tabulate(table_data, headers="firstrow", tablefmt="plain"))
             print("\n")
+        
+        if len(failed) != 0:
+            print(colored("bad", "red"))
+            print(failed)
+        else:
+            print(colored("all good", "green"))
+        print(f"{passed_count}/{total} passed")
 
     @staticmethod
     def save_data_to_file(results: Dict[str, List[TestResult]], filename: str):
