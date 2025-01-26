@@ -1,4 +1,5 @@
 #Bartek Łabuz
+#pragma test in() out(5506,-4927,344189)
 PROCEDURE plus_i_minus(u, v, T w) IS
     s
 BEGIN

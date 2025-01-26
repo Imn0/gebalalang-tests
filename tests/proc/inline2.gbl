@@ -1,0 +1,19 @@
+#pragma test in(3) out(3, 5, -523)
+
+PROCEDURE a(b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,r,s,t, T zz, T arr) IS
+BEGIN
+    b:=c;
+    zz[31233]:=5;
+    arr[55]:=-523;
+END
+
+PROGRAM IS
+    b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,r,s,t, arr[3123:480395], tab[23:321]
+BEGIN
+    READ c;
+    a(b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,r,s,t, arr, tab);
+    WRITE b;
+    WRITE arr[31233];
+    WRITE tab[55];
+   
+END

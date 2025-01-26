@@ -1,0 +1,23 @@
+#pragma test in(89523479, 83475) out(7472972409525, 7472972409525, 7472972409525, 7472972409525)
+#pragma test in(-89523479, 83475) out(-7472972409525, -7472972409525, -7472972409525, -7472972409525)
+#pragma test in(0, 83475) out(0, 0, 0, 0)
+
+PROGRAM IS
+    a, b, r
+BEGIN
+    READ a;
+    READ b;
+
+    r:=a*b;
+    WRITE r;
+    
+    r:=a*b;
+    WRITE r;
+
+    r:=a*b;
+    WRITE r;
+    
+    r:=a*b;
+    WRITE r;
+   
+END

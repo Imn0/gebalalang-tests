@@ -1,4 +1,6 @@
 #Bartek Łabuz
+#pragma test in(10, -7) out(200,127,-803,234,431,227,424,-70)
+#pragma test in(1132, -323) out(1322,-189,319,1356,1553,1033,1230,-365636)
 
 PROCEDURE do_math(x, y) IS
     f, g, h[-10:20], i, j, k
@@ -24,7 +26,8 @@ END
 PROGRAM IS
     a, b
 BEGIN
-    a := 10;
-    b := -7;
+    READ a;
+    READ b;
+    
     do_math(a, b);
 END
