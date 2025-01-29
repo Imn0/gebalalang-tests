@@ -1,0 +1,15 @@
+#pragma test in(12,4) out(0,3,0)
+PROGRAM IS
+    a,b,c
+BEGIN
+    a:=0;
+    b:=0;
+    c:=a/b; WRITE c;
+    READ a;
+    READ b;
+    c:=a/b;
+    WRITE c;
+    a:=0;
+    b:=0;
+    c:=a/b; WRITE c;
+END
