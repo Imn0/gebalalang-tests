@@ -1,0 +1,21 @@
+#pragma test in(6) out(6, 3)
+PROCEDURE proc_one(a, b) IS
+BEGIN
+    WRITE a;
+END
+
+PROCEDURE proc_two(b) IS
+    a
+BEGIN
+    a:=3;
+    WRITE a;
+END
+
+
+PROGRAM IS
+    x,y,z
+BEGIN
+    READ x;
+    proc_one(x, y);
+    proc_two(x);
+END
