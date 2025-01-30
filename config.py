@@ -10,7 +10,7 @@ class CFG:
     _gbc_path = "../gbc/target/debug/gbc"
 
     _main_test_dir = "./tests"
-    _vm_path = "./GVM/maszyna-wirtualna"
+    _vm_path = "./GVM/maszyna-wirtualna-cln"
     _test_dir = "./tests"
 
     # !! this function runs at the start of all the tests, you can whateever you want here

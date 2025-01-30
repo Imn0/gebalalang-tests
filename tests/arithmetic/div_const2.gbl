@@ -1,0 +1,25 @@
+#Bartek Łabuz
+#pragma test in(12) out(0,0,0,0,0,0,0,0,12)
+PROGRAM IS
+    x, a, b, c, d, a_, b_
+BEGIN
+    READ x; 
+
+    c := 153467 /0;
+    d := 153467 %0;
+    WRITE c;
+    WRITE d;
+    c := -153467 /0;
+    d := -153467 %0;
+    WRITE c;
+    WRITE d;
+    c := 153467 / 0;
+    d := 153467 % 0;
+    WRITE c;
+    WRITE d;
+    c := -153467 / 0;
+    d := -153467 % 0;
+    WRITE c;
+    WRITE d;
+    WRITE x;
+END

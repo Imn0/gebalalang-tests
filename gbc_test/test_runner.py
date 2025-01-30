@@ -3,6 +3,8 @@ import subprocess
 import re
 import os
 import sys
+from termcolor import colored
+
 
 sys.path.insert(0, os.path.abspath(os.path.join(__file__, "../..")))
 from config import CFG
@@ -154,7 +156,7 @@ class TestRunner:
         name = ""
         for i, test_case in enumerate(test_cases):
             name = test_case.name
-            print(f"running {name}")
+            print(f"running {name}...",end=" ")
             run_command = self.cfg.run_compiled_command(compiled_file)
             result = subprocess.Popen(
                 run_command,
@@ -173,6 +175,7 @@ class TestRunner:
                 stdout, stderr = result.communicate()
                 print(f"test {name} took too long and was killed. stderr: {stderr}")
                 fail = True
+                print(colored("fail", "red"))
                 continue
 
             if result.returncode != 0:
@@ -180,6 +183,8 @@ class TestRunner:
                     f"test {name} failed with return code {result.returncode}. stderr: {stderr}"
                 )
                 fail = True
+                print(colored("fail", "red"))
+
                 continue
 
             output = stdout.strip().split("\n")
@@ -207,6 +212,7 @@ class TestRunner:
             avg_cost_wout_io = (avg_cost_wout_io + current_cost_wout_io) / (i + 1)
 
             if len(output) != len(test_case.expected_output):
+                print(colored("fail", "red"))
                 print(
                     f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
                 )
@@ -215,12 +221,14 @@ class TestRunner:
 
             for i, o in enumerate(output):
                 if test_case.expected_output[i] != o:
+                    print(colored("fail", "red"))
                     print(
                         f"expected output of {name} is\n{test_case.expected_output}\nbut got\n{output} ."
                     )
                     fail = True
                     break
 
+            print(colored("ok", "green"))
         if fail:
             return TestResult(name, False, num_instructions, avg_cost, avg_cost_wout_io)
 
