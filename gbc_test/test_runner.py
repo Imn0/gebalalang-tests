@@ -157,6 +157,7 @@ class TestRunner:
         for i, test_case in enumerate(test_cases):
             name = test_case.name
             print(f"running {name}...",end=" ")
+            sys.stdout.flush() 
             run_command = self.cfg.run_compiled_command(compiled_file)
             result = subprocess.Popen(
                 run_command,
