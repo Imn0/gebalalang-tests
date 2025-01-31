@@ -16,7 +16,8 @@ class TestResultPrinter:
         failed = []
         passed_count = 0
         total = 0
-        for section, test_results in results.items():
+        sorted_dict = {key: results[key] for key in sorted(results)}
+        for section, test_results in sorted_dict.items():
             table_data: list[list[str]] = []
 
             print(f"\n{'=' * 50}")
