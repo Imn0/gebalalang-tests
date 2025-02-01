@@ -51,6 +51,9 @@ class TestRunner:
             r = self._compile(test_file, "./build/a.mr")
             test_cases = []
             if r:
+                if os.path.basename(test_file).startswith("error"):
+                    results.append(TestResult(os.path.basename(test_file), False, 0, 0, 0))
+                    continue
                 test_cases = self.parse_pragma_tests(test_file)
                 if len(test_cases) == 0:
                     continue
