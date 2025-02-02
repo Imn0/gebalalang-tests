@@ -1,5 +1,5 @@
 #Bartek Łabuz
-#prama test in(0) out(5050)
+#pragma test in(0) out(5050)
 PROGRAM IS
     s
 BEGIN

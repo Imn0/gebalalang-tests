@@ -1,0 +1,13 @@
+#pragma test in(0, 100) out(5050)
+PROGRAM IS
+    s, a
+BEGIN
+    READ s;
+    READ a;
+    FOR i FROM 1 TO a DO
+        a := 33;
+        s := s + i;
+    ENDFOR
+
+    WRITE s;
+END
