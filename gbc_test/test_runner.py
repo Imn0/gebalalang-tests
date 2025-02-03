@@ -76,8 +76,14 @@ class TestRunner:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            
         )
-        stdout, stderr = process.communicate()
+        try:
+            stdout, stderr = process.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            print(f"test {in_file} took too long to compile")
+            return False
 
         rtn = process.wait()
 
