@@ -1,6 +1,7 @@
 #Bartek Łabuz
 #pragma test in(153467, 72, -153467, -72) out( 2131, 35, -2132, 37, -2132, -37, 2131, -35)
 #pragma test in(20, 4, -20, -4) out( 5, 0, -5, 0, -5, 0, 5, 0)
+#pragma test in(20, 0, -20, 0) out( 0, 0, 0, 0, 0, 0, 0, 0)
 PROGRAM IS
     a, b, c, d, a_, b_
 BEGIN
